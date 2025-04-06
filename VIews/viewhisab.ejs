@@ -130,38 +130,7 @@
           </div>
         </div>
 
-        <!-- Filter Controls -->
-        <div class="mb-6 bg-custom-gray p-4 rounded-lg">
-          <div class="flex flex-wrap gap-4">
-            <div class="flex-1 min-w-[200px]">
-              <label class="block text-sm font-medium text-custom-secondary mb-1">Date Range</label>
-              <div class="flex gap-2">
-                <input type="date" id="startDate" class="form-control">
-                <input type="date" id="endDate" class="form-control">
-              </div>
-            </div>
-            <div class="flex-1 min-w-[200px]">
-              <label class="block text-sm font-medium text-custom-secondary mb-1">Transaction Type</label>
-              <select id="transactionType" class="form-control">
-                <option value="all">All Types</option>
-                <option value="credit">Credit</option>
-                <option value="debit">Debit</option>
-              </select>
-            </div>
-            <div class="flex-1 min-w-[200px]">
-              <label class="block text-sm font-medium text-custom-secondary mb-1">Amount Range</label>
-              <div class="flex gap-2">
-                <input type="number" id="minAmount" placeholder="Min" class="form-control">
-                <input type="number" id="maxAmount" placeholder="Max" class="form-control">
-              </div>
-            </div>
-            <div class="flex items-end">
-              <button onclick="resetFilters()" class="btn-secondary px-4 py-2 rounded-md">
-                Reset
-              </button>
-            </div>
-          </div>
-        </div>
+    
 
         <!-- Transactions Section -->
         <div class="bg-custom-gray p-4 md:p-6 rounded-lg">
