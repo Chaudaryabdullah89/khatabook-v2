@@ -36,19 +36,83 @@
           </div>
         </div>
       </nav>
-<div class="flex flex-col justify-center items-center bg-gray-200 my-20 py-10 rounded-md w-1/2 mx-auto" >
-    <h1 class="text-2xl text-black font-bold text-center pb-10" >Register</h1>
-    <div class="flex justify-center items-center" >
-        <form action="/registeruser" method="post" class="flex flex-col gap-4" >
-            <input type="text" name="username" placeholder="Username" class="p-4 w-96 rounded-md border-3 border-gray-900" >
-            <input type="text" name="fullname" placeholder="FullName" class="p-4 w-96 rounded-md border-3 border-gray-900" >
-            <input type="password" name="password" placeholder="Password" class="p-4 w-96 rounded-md border-3 border-gray-900" >
-            <input type="email" name="email" placeholder="Email" class="p-4 w-96 rounded-md border-3 border-gray-900" >
+<%- include('partials/header', { 
+  title: 'Register',
+  isLoggedIn: false,
+  pageTitle: 'Create Your Account'
+}) %>
 
-            <input type="submit" value="Register" class="p-2 rounded-md border-3 border-blue-900 bg-blue-900 text-white" >
-            <a href="/login" class="text-center text-blue-900" >Already have an account? Login</a>
-        </form>
+<div class="flex justify-center">
+  <div class="card w-full max-w-md p-6 md:p-8 rounded-lg shadow-md">
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <%= error %>
+      </div>
+    <% } %>
+    
+    <form action="/registeruser" method="post" class="space-y-4">
+      <div class="form-group">
+        <label for="username" class="form-label text-custom-primary">Username</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username"
+          placeholder="Choose a username" 
+          class="form-control bg-custom-white text-custom-primary border border-custom"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="fullname" class="form-label text-custom-primary">Full Name</label>
+        <input 
+          type="text" 
+          id="fullname" 
+          name="fullname" 
+          placeholder="Enter your full name" 
+          class="form-control bg-custom-white text-custom-primary border border-custom"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="email" class="form-label text-custom-primary">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="Enter your email" 
+          class="form-control bg-custom-white text-custom-primary border border-custom"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password" class="form-label text-custom-primary">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Create a password" 
+          class="form-control bg-custom-white text-custom-primary border border-custom"
+          required
+        >
+      </div>
+      
+      <button type="submit" class="btn-primary w-full py-3 rounded-md">
+        Register
+      </button>
+    </form>
+    
+    <div class="mt-6 text-center">
+      <p class="text-custom-secondary">
+        Already have an account? 
+        <a href="/login" class="text-blue-600 hover:text-blue-800 font-medium">Login</a>
+      </p>
     </div>
+  </div>
 </div>
+
+<%- include('partials/footer', { isLoggedIn: false }) %>
 </body>
 </html>

@@ -595,25 +595,4 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Add this at the top of the file after imports
-if (process.env.NODE_ENV === 'production') {
-  // Catch unhandled promises in production
-  process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  });
-}
-
-// Add this before module.exports = app;
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  res.status(500).send('Internal Server Error. Please try again later.');
-});
-
-// Catch-all route for 404s
-app.use((req, res) => {
-  console.log('404 Not Found:', req.url);
-  res.status(404).send('Page not found');
-});
-
 module.exports = app;

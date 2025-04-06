@@ -1,0 +1,109 @@
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-custom-gray border-t border-custom mt-12 py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-custom-primary mb-4">KhataBook</h3>
+                    <p class="text-custom-secondary">Your personal finance manager and account tracker.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-custom-primary mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-blue-600 hover:text-blue-800">Home</a></li>
+                        <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                            <li><a href="/dashboard" class="text-blue-600 hover:text-blue-800">Dashboard</a></li>
+                            <li><a href="/profile" class="text-blue-600 hover:text-blue-800">Profile</a></li>
+                        <% } else { %>
+                            <li><a href="/login" class="text-blue-600 hover:text-blue-800">Login</a></li>
+                            <li><a href="/register" class="text-blue-600 hover:text-blue-800">Register</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-custom-primary mb-4">Contact</h3>
+                    <ul class="space-y-2 text-custom-secondary">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                            <span>support@khatabook.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2 text-blue-600"></i>
+                            <span>+91 123-456-7890</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-custom text-center text-custom-secondary">
+                <p>&copy; <%= new Date().getFullYear() %> KhataBook. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+        
+        if (mobileMenuBtn && mobileNav && mobileNavClose) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNav.classList.add('active');
+            });
+            
+            mobileNavClose.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+            });
+        }
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+        const mobileThemeIcon = mobileThemeToggle ? mobileThemeToggle.querySelector('i') : null;
+        
+        // Function to update theme icons
+        function updateThemeIcons(theme) {
+            if (themeIcon) {
+                themeIcon.className = theme === 'light' ? 'fas fa-moon text-custom-primary' : 'fas fa-sun text-custom-primary';
+            }
+            if (mobileThemeIcon) {
+                mobileThemeIcon.className = theme === 'light' ? 'fas fa-moon text-custom-primary' : 'fas fa-sun text-custom-primary';
+            }
+        }
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcons(savedTheme);
+        
+        // Desktop theme toggle
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcons(newTheme);
+            });
+        }
+        
+        // Mobile theme toggle
+        if (mobileThemeToggle) {
+            mobileThemeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcons(newTheme);
+            });
+        }
+        
+        // Extra page scripts
+        <% if (typeof scripts !== 'undefined') { %>
+            <%- scripts %>
+        <% } %>
+    </script>
+</body>
+</html> 
