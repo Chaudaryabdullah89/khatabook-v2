@@ -1,101 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-<!-- Start Generation Here -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<!-- End Generation Here -->
+    <title>Login - KhataBook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
+    <style>
+      .login-animation {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+      
+      .login-illustration {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgd2lkdGg9IjcyMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCA3MjAgNjAwIj48cGF0aCBkPSJNMCAwSDcyMFY2MDBIMHoiIGZpbGw9IiNmMGY5ZmYiLz48Y2lyY2xlIGN4PSIzNTEuNTMiIGN5PSIyNzQuNDUiIHI9IjE4NS4wNCIgZmlsbD0iI2YzZjRmNiIvPjxlbGxpcHNlIGN4PSIxODQuODciIGN5PSI1NzIuODQiIHJ4PSIxNDkuNyIgcnk9IjE3LjUiIGZpbGw9IiNmMGY5ZmYiLz48ZWxsaXBzZSBjeD0iNTk1LjI4IiBjeT0iNTQzLjM4IiByeD0iMTI0LjcyIiByeT0iMTcuNSIgZmlsbD0iI2YwZjlmZiIvPjxjaXJjbGUgY3g9IjM1MiIgY3k9IjI3NCIgcj0iMTY4LjUiIGZpbGw9IiNmMGY5ZmYiLz48Y2lyY2xlIGN4PSIzMzQiIGN5PSIyNzQiIHI9IjExOC41IiBmaWxsPSIjZjBmZmZmIi8+PC9zdmc+');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+      
+      .input-icon {
+        color: #9ca3af;
+        transition: color 0.2s ease;
+      }
+      
+      .form-control:focus ~ .input-icon {
+        color: #3b82f6;
+      }
+      
+      .btn-shine {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .btn-shine:after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+        transform: rotate(30deg);
+        transition: all 0.5s;
+        opacity: 0;
+      }
+      
+      .btn-shine:hover:after {
+        animation: shine 1.5s ease-out;
+        opacity: 1;
+      }
+      
+      @keyframes shine {
+        0% { left: -50%; opacity: 0; }
+        25% { opacity: 1; }
+        100% { left: 150%; opacity: 0; }
+      }
+    </style>
 </head>
-<body>
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4">
-          <div class="flex justify-between items-center h-16">
-            <div class="flex items-center">
-              <a href="/" class="text-2xl font-bold text-blue-600">
-                <i class="fas fa-book-open mr-2"></i>KhataBook
-              </a>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="hidden md:flex items-center gap-2">
-                <button class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
-                  <i class="fas fa-moon text-gray-600"></i>
-                </button>
-                <button class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
-                  <i class="fas fa-sun text-gray-600"></i>
-                </button>
-              </div>
-              <div class="flex items-center gap-3">
-                <a href="/login" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Login</a>
-                <a href="/register" class="px-4 py-2 rounded-md border border-blue-600 text-blue-600 hover:bg-blue-50">Register</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+<body class="bg-custom-white">
 <%- include('partials/header', { 
   title: 'Login', 
   isLoggedIn: false,
-  pageTitle: 'Login to Your Account'
+  pageTitle: 'Welcome Back!'
 }) %>
 
-<div class="flex justify-center">
-  <div class="card w-full max-w-md p-6 md:p-8 rounded-lg shadow-md">
-    <% if (typeof error !== 'undefined' && error) { %>
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        <%= error %>
+<div class="flex min-h-[calc(100vh-10rem)] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="flex rounded-2xl shadow-xl overflow-hidden w-full max-w-6xl login-animation">
+    <!-- Left Side - Illustration -->
+    <div class="hidden lg:block lg:w-1/2 login-illustration p-12 relative">
+      <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-600/10"></div>
+      <div class="relative z-10 h-full flex flex-col items-center justify-center">
+        <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+          <i class="fas fa-book-open text-blue-600 text-5xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-blue-800 mb-4 text-center">KhataBook</h2>
+        <p class="text-blue-700 text-center mb-8 max-w-md">The simple way to manage your personal and business finances, track expenses, and maintain your financial records.</p>
+        <div class="flex gap-4">
+          <div class="bg-white bg-opacity-80 rounded-lg p-4 shadow-sm flex items-center">
+            <i class="fas fa-shield-alt text-blue-600 mr-3 text-xl"></i>
+            <div>
+              <h3 class="font-medium text-blue-800">Secure</h3>
+              <p class="text-sm text-blue-700">Your data is encrypted and protected</p>
+            </div>
+          </div>
+          <div class="bg-white bg-opacity-80 rounded-lg p-4 shadow-sm flex items-center">
+            <i class="fas fa-mobile-alt text-blue-600 mr-3 text-xl"></i>
+            <div>
+              <h3 class="font-medium text-blue-800">Mobile-friendly</h3>
+              <p class="text-sm text-blue-700">Access from any device</p>
+            </div>
+          </div>
+        </div>
       </div>
-    <% } %>
+    </div>
     
-    <form action="/loginuser" method="post" class="space-y-4">
-      <div class="form-group">
-        <label for="email" class="form-label text-custom-primary">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          placeholder="Enter your email" 
-          class="form-control bg-custom-white text-custom-primary border border-custom"
-          required
-        >
-      </div>
-      
-      <div class="form-group">
-        <label for="password" class="form-label text-custom-primary">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          placeholder="Enter your password" 
-          class="form-control bg-custom-white text-custom-primary border border-custom"
-          required
-        >
-      </div>
-      
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center">
-          <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-blue-600">
-          <label for="remember" class="ml-2 block text-sm text-custom-secondary">Remember me</label>
+    <!-- Right Side - Login Form -->
+    <div class="w-full lg:w-1/2 p-8 md:p-12 bg-custom-white">
+      <div class="flex justify-center lg:hidden mb-8">
+        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-book-open text-blue-600 text-4xl"></i>
         </div>
       </div>
       
-      <button type="submit" class="btn-primary w-full py-3 rounded-md">
-        Sign In
-      </button>
-    </form>
-    
-    <div class="mt-6 text-center">
-      <p class="text-custom-secondary">
-        Don't have an account? 
-        <a href="/register" class="text-blue-600 hover:text-blue-800 font-medium">Register</a>
-      </p>
+      <h1 class="text-2xl md:text-3xl font-bold text-custom-primary text-center mb-2">Welcome Back!</h1>
+      <p class="text-custom-secondary text-center mb-8">Login to access your KhataBook account</p>
+      
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md flex items-start">
+          <i class="fas fa-exclamation-circle mr-3 mt-0.5"></i>
+          <span><%= error %></span>
+        </div>
+      <% } %>
+      
+      <form action="/loginuser" method="post" class="space-y-6">
+        <div class="form-group">
+          <label for="email" class="form-label text-custom-primary flex items-center">
+            <i class="fas fa-envelope mr-2 text-blue-600"></i>
+            Email
+          </label>
+          <div class="relative">
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="Enter your email" 
+              class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+              required
+              autofocus
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-at input-icon"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="flex items-center justify-between">
+            <label for="password" class="form-label text-custom-primary flex items-center">
+              <i class="fas fa-lock mr-2 text-blue-600"></i>
+              Password
+            </label>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-800">
+              Forgot password?
+            </a>
+          </div>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="Enter your password" 
+              class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+              required
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-key input-icon"></i>
+            </div>
+            <button 
+              type="button" 
+              id="togglePassword" 
+              class="absolute inset-y-0 right-0 pr-3 flex items-center"
+              onclick="togglePasswordVisibility()"
+            >
+              <i class="fas fa-eye input-icon" id="toggleIcon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="flex items-center">
+          <input 
+            id="remember" 
+            name="remember" 
+            type="checkbox" 
+            class="h-4 w-4 text-blue-600 border-custom rounded"
+          >
+          <label for="remember" class="ml-2 block text-sm text-custom-secondary">
+            Remember me for 30 days
+          </label>
+        </div>
+        
+        <button type="submit" class="btn-primary w-full py-3 rounded-md btn-shine flex items-center justify-center">
+          <i class="fas fa-sign-in-alt mr-2"></i>
+          Sign In
+        </button>
+      </form>
+      
+      <div class="mt-8 text-center">
+        <p class="text-custom-secondary">
+          Don't have an account? 
+          <a href="/register" class="text-blue-600 hover:text-blue-800 font-medium">
+            Create an account
+          </a>
+        </p>
+      </div>
     </div>
   </div>
 </div>
 
-<%- include('partials/footer', { isLoggedIn: false }) %>
+<%- include('partials/footer', { 
+  isLoggedIn: false,
+  scripts: `
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+  `
+}) %>
 </body>
 </html>

@@ -49,110 +49,132 @@
     </style>
   </head>
   <body class="bg-custom-white">
-    <nav class="bg-custom-white shadow-md border-b border-custom">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <a href="/dashboard" class="text-2xl font-bold text-blue-600">
-              <i class="fas fa-book-open mr-2"></i>KhataBook
-            </a>
-          </div>
-          <div class="flex items-center gap-4">
-            <button id="themeToggle" class="theme-toggle p-2 rounded-full hover:bg-custom-gray">
-              <i class="fas fa-moon text-custom-primary"></i>
-            </button>
-            <div class="flex items-center gap-3">
-              <a href="/dashboard" class="btn-secondary px-4 py-2 rounded-md">Dashboard</a>
-              <a href="/profile" class="btn-secondary px-4 py-2 rounded-md">Profile</a>
-              <a href="/logout" class="btn-primary px-4 py-2 rounded-md">LogOut</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <%- include('partials/header', { 
+      title: hisab.name,
+      isLoggedIn: true,
+      pageTitle: 'View Hisab'
+    }) %>
 
-    <div class="max-w-4xl mx-auto mt-10 px-4">
-      <div class="bg-custom-white rounded-lg shadow-md p-8 border border-custom">
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="text-3xl font-bold text-gray-900"><%= hisab.name %></h1>
-          <div class="flex items-center gap-4">
+    <div class="max-w-4xl mx-auto mb-8">
+      <div class="card border border-custom rounded-lg p-4 md:p-6 shadow-md">
+        <!-- Hisab Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <h1 class="text-2xl md:text-3xl font-bold text-custom-primary"><%= hisab.name %></h1>
+          <div class="flex flex-wrap items-center gap-2">
             <% if(hisab.isEncrypted) { %>
-              <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+              <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs md:text-sm font-medium flex items-center">
                 <i class="fas fa-lock text-green-600 mr-2"></i>
                 Encrypted
               </span>
             <% } %>
             <% if(hisab.isShareable) { %>
-              <div class="relative group">
-                <button onclick="copyShareLink()" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium flex items-center hover:bg-blue-200">
+              <div class="relative share-button-container">
+                <button id="shareButton" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs md:text-sm font-medium flex items-center hover:bg-blue-200 transition-colors">
                   <i class="fas fa-share-alt text-blue-600 mr-2"></i>
                   Share
                 </button>
-                <div class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 hidden group-hover:block z-10">
+                <div id="shareTooltip" class="hidden absolute right-0 mt-2 w-64 bg-custom-white rounded-lg shadow-lg p-4 z-10 border border-custom">
+                  <p class="text-sm text-custom-secondary mb-2">Share this hisab:</p>
                   <div class="flex items-center space-x-2">
-                    <input type="text" id="shareLink" value="<%= process.env.BASE_URL || 'http://localhost:3000' %>/shared/<%= hisab.shareToken %>" readonly class="flex-1 px-2 py-1 border rounded text-sm">
-                    <button onclick="copyShareLink()" class="px-2 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+                    <input type="text" id="shareLink" value="<%= process.env.BASE_URL || 'https://khatabook-v2.vercel.app/' %>/shared/<%= hisab.shareToken %>" readonly class="form-control text-sm py-1 px-2">
+                    <button onclick="copyShareLink()" class="btn-primary px-2 py-1 rounded text-sm">
                       <i class="fas fa-copy"></i>
                     </button>
                   </div>
-                  <p class="text-xs text-gray-500 mt-2">Anyone with this link can view this hisab</p>
+                  <div id="copySuccess" class="hidden mt-2 text-xs text-green-600">
+                    <i class="fas fa-check-circle mr-1"></i> Link copied to clipboard!
+                  </div>
+                  <p class="text-xs text-custom-secondary mt-2">Anyone with this link can view this hisab</p>
                 </div>
               </div>
             <% } %>
           </div>
         </div>
 
-        <div class="bg-custom-gray p-6 rounded-lg mb-6">
-          <h2 class="text-xl font-semibold text-custom-secondary mb-4">Description</h2>
-          <p class="text-custom-primary leading-relaxed"><%= hisab.description %></p>
+        <!-- Description -->
+        <div class="bg-custom-gray p-4 md:p-6 rounded-lg mb-6">
+          <h2 class="text-lg md:text-xl font-semibold text-custom-primary mb-2">Description</h2>
+          <p class="text-custom-secondary leading-relaxed"><%= hisab.description %></p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div class="bg-custom-gray p-6 rounded-lg">
-            <h3 class="text-lg font-semibold text-custom-secondary mb-4">Hisab Details</h3>
-            <div class="space-y-2">
-              <p class="text-custom-primary">
+        <!-- Details Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+          <div class="bg-custom-gray p-4 md:p-6 rounded-lg">
+            <h3 class="text-md md:text-lg font-semibold text-custom-primary mb-3">Hisab Details</h3>
+            <div class="space-y-2 text-sm md:text-base">
+              <p class="text-custom-secondary">
                 <span class="font-medium">Created:</span> 
                 <%= hisab.createdAt.toLocaleDateString() %> at <%= hisab.createdAt.toLocaleTimeString() %>
               </p>
-              <p class="text-custom-primary">
+              <p class="text-custom-secondary">
                 <span class="font-medium">Status:</span> 
                 <%= hisab.isEncrypted ? 'Encrypted' : 'Not Encrypted' %>
               </p>
-              <p class="text-custom-primary">
+              <p class="text-custom-secondary">
                 <span class="font-medium">Sharing:</span> 
                 <%= hisab.isShareable ? 'Enabled' : 'Disabled' %>
               </p>
             </div>
           </div>
 
-          <div class="bg-custom-gray p-6 rounded-lg">
-            <h3 class="text-lg font-semibold text-custom-secondary mb-4">Quick Actions</h3>
-            <div class="space-y-3">
-              <a href="/addTransaction/<%= hisab._id %>" class="block w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-center">
-                Add Transaction
+          <div class="bg-custom-gray p-4 md:p-6 rounded-lg">
+            <h3 class="text-md md:text-lg font-semibold text-custom-primary mb-3">Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <a href="/addTransaction/<%= hisab._id %>" class="btn-primary px-4 py-2 rounded-md text-center text-sm md:text-base">
+                <i class="fas fa-plus mr-1"></i> Add Transaction
               </a>
-              <a href="/editHisab/<%= hisab._id %>" class="block w-full px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 text-center">
-                Edit Hisab
+              <a href="/editHisab/<%= hisab._id %>" class="btn-secondary px-4 py-2 rounded-md text-center border border-blue-600 text-sm md:text-base">
+                <i class="fas fa-edit mr-1"></i> Edit Hisab
               </a>
             </div>
           </div>
         </div>
 
-      
+        <!-- Filter Controls -->
+        <div class="mb-6 bg-custom-gray p-4 rounded-lg">
+          <div class="flex flex-wrap gap-4">
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-custom-secondary mb-1">Date Range</label>
+              <div class="flex gap-2">
+                <input type="date" id="startDate" class="form-control">
+                <input type="date" id="endDate" class="form-control">
+              </div>
+            </div>
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-custom-secondary mb-1">Transaction Type</label>
+              <select id="transactionType" class="form-control">
+                <option value="all">All Types</option>
+                <option value="credit">Credit</option>
+                <option value="debit">Debit</option>
+              </select>
+            </div>
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-custom-secondary mb-1">Amount Range</label>
+              <div class="flex gap-2">
+                <input type="number" id="minAmount" placeholder="Min" class="form-control">
+                <input type="number" id="maxAmount" placeholder="Max" class="form-control">
+              </div>
+            </div>
+            <div class="flex items-end">
+              <button onclick="resetFilters()" class="btn-secondary px-4 py-2 rounded-md">
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
 
         <!-- Transactions Section -->
-        <div class="bg-custom-gray p-6 rounded-lg">
+        <div class="bg-custom-gray p-4 md:p-6 rounded-lg">
           <h2 class="text-xl font-semibold text-custom-primary mb-4">Transactions</h2>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-custom">
               <thead class="bg-custom-gray">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Description</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Amount</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Type</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Actions</th>
+                  <th class="px-3 md:px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Date</th>
+                  <th class="px-3 md:px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Description</th>
+                  <th class="px-3 md:px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Amount</th>
+                  <th class="px-3 md:px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Type</th>
+                  <th class="px-3 md:px-6 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody class="bg-custom-white divide-y divide-custom" id="transactionsTable">
@@ -162,21 +184,21 @@
                         data-date="<%= new Date(transaction.date).toISOString().split('T')[0] %>"
                         data-type="<%= transaction.type %>"
                         data-amount="<%= transaction.amount %>">
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-custom-secondary">
+                      <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-custom-secondary">
                         <%= new Date(transaction.date).toLocaleDateString() %>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-custom-primary">
+                      <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-custom-primary">
                         <%= transaction.description %>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-custom-primary">
+                      <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-custom-primary">
                         ₹<%= transaction.amount.toFixed(2) %>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= transaction.type === 'credit' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
                           <%= transaction.type %>
                         </span>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-custom-secondary">
+                      <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-custom-secondary">
                         <form action="/deleteTransaction/<%= hisab._id %>/<%= transaction._id %>" method="POST" class="inline">
                           <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this transaction?')">
                             <i class="fas fa-trash"></i>
@@ -199,88 +221,87 @@
       </div>
     </div>
 
-    <script>
-      // Theme Toggle
-      const themeToggle = document.getElementById('themeToggle');
-      const themeIcon = themeToggle.querySelector('i');
-      
-      // Check for saved theme preference
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      updateThemeIcon(savedTheme);
-
-      themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
-      });
-
-      function updateThemeIcon(theme) {
-        themeIcon.className = theme === 'light' ? 'fas fa-moon text-custom-primary' : 'fas fa-sun text-custom-primary';
-      }
-
-      // Filter Functionality
-      function filterTransactions() {
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        const type = document.getElementById('transactionType').value;
-        const minAmount = parseFloat(document.getElementById('minAmount').value) || 0;
-        const maxAmount = parseFloat(document.getElementById('maxAmount').value) || Infinity;
-
-        const rows = document.querySelectorAll('.transaction-row');
-        rows.forEach(row => {
-          const rowDate = row.dataset.date;
-          const rowType = row.dataset.type;
-          const rowAmount = parseFloat(row.dataset.amount);
-
-          const dateMatch = (!startDate || rowDate >= startDate) && (!endDate || rowDate <= endDate);
-          const typeMatch = type === 'all' || rowType === type;
-          const amountMatch = rowAmount >= minAmount && rowAmount <= maxAmount;
-
-          row.style.display = dateMatch && typeMatch && amountMatch ? '' : 'none';
-        });
-      }
-
-      function resetFilters() {
-        document.getElementById('startDate').value = '';
-        document.getElementById('endDate').value = '';
-        document.getElementById('transactionType').value = 'all';
-        document.getElementById('minAmount').value = '';
-        document.getElementById('maxAmount').value = '';
+    <%- include('partials/footer', { 
+      isLoggedIn: true,
+      scripts: `
+        // Share button functionality
+        const shareButton = document.getElementById('shareButton');
+        const shareTooltip = document.getElementById('shareTooltip');
         
-        const rows = document.querySelectorAll('.transaction-row');
-        rows.forEach(row => row.style.display = '');
-      }
-
-      // Add event listeners for filters
-      document.getElementById('startDate').addEventListener('change', filterTransactions);
-      document.getElementById('endDate').addEventListener('change', filterTransactions);
-      document.getElementById('transactionType').addEventListener('change', filterTransactions);
-      document.getElementById('minAmount').addEventListener('input', filterTransactions);
-      document.getElementById('maxAmount').addEventListener('input', filterTransactions);
-
-      // Copy to clipboard functionality
-      async function copyShareLink() {
-        const shareLink = document.getElementById('shareLink');
-        try {
-          await navigator.clipboard.writeText(shareLink.value);
-          const successMessage = document.createElement('div');
-          successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg';
-          successMessage.textContent = 'Share link copied to clipboard!';
-          document.body.appendChild(successMessage);
+        if (shareButton && shareTooltip) {
+          shareButton.addEventListener('click', () => {
+            shareTooltip.classList.toggle('hidden');
+          });
           
-          setTimeout(() => {
-            successMessage.remove();
-          }, 2000);
-        } catch (err) {
-          console.error('Failed to copy text: ', err);
-          shareLink.select();
-          document.execCommand('copy');
-          alert('Share link copied to clipboard!');
+          // Close the tooltip when clicking outside
+          document.addEventListener('click', (event) => {
+            if (!event.target.closest('.share-button-container')) {
+              shareTooltip.classList.add('hidden');
+            }
+          });
         }
-      }
-    </script>
+        
+        // Copy share link functionality
+        async function copyShareLink() {
+          const shareLink = document.getElementById('shareLink');
+          const copySuccess = document.getElementById('copySuccess');
+          
+          try {
+            await navigator.clipboard.writeText(shareLink.value);
+            copySuccess.classList.remove('hidden');
+            
+            setTimeout(() => {
+              copySuccess.classList.add('hidden');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy: ', err);
+            
+            // Fallback for older browsers
+            shareLink.select();
+            document.execCommand('copy');
+          }
+        }
+        
+        // Filter Functionality
+        function filterTransactions() {
+          const startDate = document.getElementById('startDate').value;
+          const endDate = document.getElementById('endDate').value;
+          const type = document.getElementById('transactionType').value;
+          const minAmount = parseFloat(document.getElementById('minAmount').value) || 0;
+          const maxAmount = parseFloat(document.getElementById('maxAmount').value) || Infinity;
+
+          const rows = document.querySelectorAll('.transaction-row');
+          rows.forEach(row => {
+            const rowDate = row.dataset.date;
+            const rowType = row.dataset.type;
+            const rowAmount = parseFloat(row.dataset.amount);
+
+            const dateMatch = (!startDate || rowDate >= startDate) && (!endDate || rowDate <= endDate);
+            const typeMatch = type === 'all' || rowType === type;
+            const amountMatch = rowAmount >= minAmount && rowAmount <= maxAmount;
+
+            row.style.display = dateMatch && typeMatch && amountMatch ? '' : 'none';
+          });
+        }
+
+        function resetFilters() {
+          document.getElementById('startDate').value = '';
+          document.getElementById('endDate').value = '';
+          document.getElementById('transactionType').value = 'all';
+          document.getElementById('minAmount').value = '';
+          document.getElementById('maxAmount').value = '';
+          
+          const rows = document.querySelectorAll('.transaction-row');
+          rows.forEach(row => row.style.display = '');
+        }
+
+        // Add event listeners for filters
+        document.getElementById('startDate').addEventListener('change', filterTransactions);
+        document.getElementById('endDate').addEventListener('change', filterTransactions);
+        document.getElementById('transactionType').addEventListener('change', filterTransactions);
+        document.getElementById('minAmount').addEventListener('input', filterTransactions);
+        document.getElementById('maxAmount').addEventListener('input', filterTransactions);
+      `
+    }) %>
   </body>
 </html>

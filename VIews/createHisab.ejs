@@ -19,91 +19,141 @@
     </script>
 </head>
 <body class="bg-gray-50">
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <a href="/dashboard" class="text-2xl font-bold text-blue-600">
-                        <i class="fas fa-book-open mr-2"></i>KhataBook
-                    </a>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="hidden md:flex items-center gap-2">
-                        <button class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
-                            <i class="fas fa-moon text-gray-600"></i>
-                        </button>
-                        <button class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
-                            <i class="fas fa-sun text-gray-600"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="/logout" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">LogOut</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <%- include('partials/header', { 
+        title: 'Create New Hisab',
+        isLoggedIn: true,
+        pageTitle: 'Create New Hisab'
+    }) %>
 
-    <div class="max-w-2xl mx-auto mt-10 px-4">
-        <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">Create New Hisab</h1>
-            
+    <div class="max-w-2xl mx-auto mb-8">
+        <div class="card p-4 md:p-6 lg:p-8 rounded-lg shadow-md">
             <form action="/createNewHisab" method="POST" class="space-y-6">
-                <div>
-                    <label for="hisabname" class="block text-sm font-medium text-gray-700 mb-2">Hisab Name</label>
-                    <input type="text" id="hisabname" name="hisabname" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                <div class="form-group">
+                    <label for="hisabname" class="form-label text-custom-primary">Hisab Name</label>
+                    <input 
+                        type="text" 
+                        id="hisabname" 
+                        name="hisabname" 
+                        required
+                        placeholder="Enter a name for your hisab"
+                        class="form-control bg-custom-white text-custom-primary border border-custom"
+                    >
                 </div>
 
-                <div>
-                    <label for="hisabdescription" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                    <textarea id="hisabdescription" name="hisabdescription" rows="4" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <div class="form-group">
+                    <label for="hisabdescription" class="form-label text-custom-primary">Description</label>
+                    <textarea 
+                        id="hisabdescription" 
+                        name="hisabdescription" 
+                        rows="4" 
+                        required
+                        placeholder="Describe the purpose of this hisab"
+                        class="form-control bg-custom-white text-custom-primary border border-custom"
+                    ></textarea>
                 </div>
 
-               
-                <div class="flex space-x-6">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="isencrypted" name="isencrypted" onchange="togglePasscodeFields()"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="isencrypted" class="ml-2 block text-sm text-gray-700">Encrypt this Hisab</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex items-center bg-custom-gray p-3 rounded-lg">
+                        <input 
+                            type="checkbox" 
+                            id="isencrypted" 
+                            name="isencrypted" 
+                            onchange="togglePasscodeFields()"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-custom rounded"
+                        >
+                        <label for="isencrypted" class="ml-2 block text-sm text-custom-primary">
+                            <i class="fas fa-lock text-blue-600 mr-1"></i> Encrypt this Hisab
+                        </label>
                     </div>
 
-                    <div class="flex items-center">
-                        <input type="checkbox" id="isshareable" name="isshareable"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="isshareable" class="ml-2 block text-sm text-gray-700">Make Shareable</label>
+                    <div class="flex items-center bg-custom-gray p-3 rounded-lg">
+                        <input 
+                            type="checkbox" 
+                            id="isshareable" 
+                            name="isshareable"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-custom rounded"
+                        >
+                        <label for="isshareable" class="ml-2 block text-sm text-custom-primary">
+                            <i class="fas fa-share-alt text-blue-600 mr-1"></i> Make Shareable
+                        </label>
                     </div>
                 </div>
 
-                <div id="passcodeFields" class="hidden space-y-4">
-                    <div>
-                        <label for="passcode" class="block text-sm font-medium text-gray-700 mb-2">Passcode</label>
-                        <input type="password" id="passcode" name="passcode"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                            minlength="4" maxlength="6">
-                        <p class="mt-1 text-sm text-gray-500">Enter a 4-6 digit passcode to secure your hisab</p>
+                <div id="passcodeFields" class="hidden space-y-4 bg-custom-gray p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-custom-primary mb-2">Security Settings</h3>
+                    <div class="form-group">
+                        <label for="passcode" class="form-label text-custom-primary">Passcode</label>
+                        <input 
+                            type="password" 
+                            id="passcode" 
+                            name="passcode"
+                            placeholder="Enter 4-6 digit passcode"
+                            class="form-control bg-custom-white text-custom-primary border border-custom"
+                            minlength="4" 
+                            maxlength="6"
+                        >
+                        <p class="mt-1 text-xs text-custom-secondary">Enter a 4-6 digit passcode to secure your hisab</p>
                     </div>
-                    <div>
-                        <label for="confirmPasscode" class="block text-sm font-medium text-gray-700 mb-2">Confirm Passcode</label>
-                        <input type="password" id="confirmPasscode" name="confirmPasscode"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                            minlength="4" maxlength="6">
+                    <div class="form-group">
+                        <label for="confirmPasscode" class="form-label text-custom-primary">Confirm Passcode</label>
+                        <input 
+                            type="password" 
+                            id="confirmPasscode" 
+                            name="confirmPasscode"
+                            placeholder="Confirm your passcode"
+                            class="form-control bg-custom-white text-custom-primary border border-custom"
+                            minlength="4" 
+                            maxlength="6"
+                        >
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-4">
-                    <a href="/dashboard" 
-                        class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
+                    <a href="/dashboard" class="btn-secondary px-6 py-2 rounded-md text-center">
                         Cancel
                     </a>
-                    <button type="submit"
-                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="submit" class="btn-primary px-6 py-2 rounded-md">
                         Create Hisab
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
+    <%- include('partials/footer', { 
+        isLoggedIn: true,
+        scripts: `
+            function togglePasscodeFields() {
+                const isEncrypted = document.getElementById('isencrypted').checked;
+                const passcodeFields = document.getElementById('passcodeFields');
+                
+                if (isEncrypted) {
+                    passcodeFields.classList.remove('hidden');
+                } else {
+                    passcodeFields.classList.add('hidden');
+                }
+            }
+            
+            // Validate passcodes match
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const isEncrypted = document.getElementById('isencrypted').checked;
+                
+                if (isEncrypted) {
+                    const passcode = document.getElementById('passcode').value;
+                    const confirmPasscode = document.getElementById('confirmPasscode').value;
+                    
+                    if (passcode !== confirmPasscode) {
+                        e.preventDefault();
+                        alert('Passcodes do not match!');
+                    }
+                    
+                    if (passcode.length < 4 || passcode.length > 6) {
+                        e.preventDefault();
+                        alert('Passcode must be 4-6 digits');
+                    }
+                }
+            });
+        `
+    }) %>
 </body>
 </html>

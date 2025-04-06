@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - KhataBook</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link href="/css/responsive.css" rel="stylesheet" />
     <style>
       [data-theme="dark"] {
         --bg-primary: #1a202c;
@@ -40,6 +42,41 @@
       .border-custom {
         border-color: var(--border-color);
       }
+      .card-animate {
+        transition: all 0.3s ease;
+      }
+      .card-animate:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      
+      .stats-counter {
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .filter-container {
+        animation: slideDown 0.4s ease-out;
+      }
+      
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .pulse-btn {
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+        70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+      }
     </style>
   </head>
   <body class="bg-custom-white">
@@ -50,29 +87,116 @@
       currentPath: '/dashboard'
     }) %>
 
-    <!-- Filter Controls -->
-    <div class="card p-4 mb-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="flex items-center">
-          <label for="filter" class="mr-2 text-sm font-medium text-custom-secondary whitespace-nowrap">Sort by:</label>
-          <select id="filter" class="form-control bg-custom-white text-custom-primary border border-custom">
-            <option value="latest">Latest</option>
-            <option value="oldest">Oldest</option>
-          </select>
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="card p-6 text-center border border-custom rounded-lg shadow-md flex flex-col items-center card-animate bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800">
+        <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-700 flex items-center justify-center mb-4">
+          <i class="fas fa-book text-blue-600 dark:text-blue-300 text-2xl"></i>
         </div>
+        <div class="stats-counter text-blue-600 dark:text-blue-300 mb-2"><%= hisabs ? hisabs.length : 0 %></div>
+        <div class="text-custom-secondary font-medium">Total Hisabs</div>
+      </div>
+      
+      <div class="card p-6 text-center border border-custom rounded-lg shadow-md flex flex-col items-center card-animate bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800">
+        <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-700 flex items-center justify-center mb-4">
+          <i class="fas fa-lock text-green-600 dark:text-green-300 text-2xl"></i>
+        </div>
+        <div class="stats-counter text-green-600 dark:text-green-300 mb-2">
+          <%= hisabs ? hisabs.filter(h => h.isEncrypted).length : 0 %>
+        </div>
+        <div class="text-custom-secondary font-medium">Encrypted Hisabs</div>
+      </div>
+      
+      <div class="card p-6 text-center border border-custom rounded-lg shadow-md flex flex-col items-center card-animate bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800">
+        <div class="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-700 flex items-center justify-center mb-4">
+          <i class="fas fa-share-alt text-purple-600 dark:text-purple-300 text-2xl"></i>
+        </div>
+        <div class="stats-counter text-purple-600 dark:text-purple-300 mb-2">
+          <%= hisabs ? hisabs.filter(h => h.isShareable).length : 0 %>
+        </div>
+        <div class="text-custom-secondary font-medium">Shared Hisabs</div>
+      </div>
+    </div>
 
-        <div class="flex flex-col sm:flex-row items-start sm:items-center">
-          <label for="dateFilter" class="mr-2 text-sm font-medium text-custom-secondary mb-1 sm:mb-0">Date Range:</label>
-          <div class="flex flex-col sm:flex-row gap-2 w-full">
-            <input type="date" id="startDate" class="form-control bg-custom-white text-custom-primary border border-custom" />
-            <span class="hidden sm:block text-custom-secondary mx-1">to</span>
-            <input type="date" id="endDate" class="form-control bg-custom-white text-custom-primary border border-custom" />
+    <!-- Filter Button -->
+    <div class="mb-6 flex flex-wrap justify-between items-center">
+      <h2 class="text-2xl font-bold text-custom-primary mb-4 md:mb-0">
+        <i class="fas fa-clipboard-list mr-2"></i>Your Hisabs
+      </h2>
+      <div class="flex gap-4">
+        <button id="toggleFilters" class="btn-secondary px-4 py-2 rounded-md flex items-center">
+          <i class="fas fa-filter mr-2"></i>
+          <span>Filters</span>
+        </button>
+        <a href="/createHisab" class="btn-primary px-4 py-2 rounded-md flex items-center">
+          <i class="fas fa-plus mr-2"></i>
+          <span>New Hisab</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Filter Controls (hidden by default) -->
+    <div id="filterContainer" class="card p-6 mb-8 border border-custom rounded-lg shadow-md filter-container hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="form-group">
+          <label for="filter" class="form-label text-custom-primary">Sort by</label>
+          <div class="relative">
+            <select id="filter" class="form-control pl-10 bg-custom-white text-custom-primary border border-custom">
+              <option value="latest">Latest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="alphabetical">Alphabetical (A-Z)</option>
+              <option value="transactions">Most Transactions</option>
+            </select>
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-sort text-gray-400"></i>
+            </div>
           </div>
         </div>
 
-        <div class="flex justify-end">
-          <button onclick="applyFilters()" class="btn-primary px-4 py-2 rounded-md">
-            Apply Filters
+        <div class="form-group">
+          <label class="form-label text-custom-primary">Date Range</label>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="relative">
+              <input type="date" id="startDate" class="form-control pl-10 bg-custom-white text-custom-primary border border-custom" placeholder="Start Date" />
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-calendar-alt text-gray-400"></i>
+              </div>
+            </div>
+            <div class="relative">
+              <input type="date" id="endDate" class="form-control pl-10 bg-custom-white text-custom-primary border border-custom" placeholder="End Date" />
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-calendar-alt text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label text-custom-primary">Filter Options</label>
+          <div class="flex gap-3">
+            <label class="inline-flex items-center bg-custom-gray p-3 rounded-lg cursor-pointer flex-1">
+              <input type="checkbox" id="filterEncrypted" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-custom rounded" />
+              <span class="ml-2 text-custom-primary text-sm">
+                <i class="fas fa-lock text-green-600 mr-1"></i> Encrypted
+              </span>
+            </label>
+            <label class="inline-flex items-center bg-custom-gray p-3 rounded-lg cursor-pointer flex-1">
+              <input type="checkbox" id="filterShareable" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-custom rounded" />
+              <span class="ml-2 text-custom-primary text-sm">
+                <i class="fas fa-share-alt text-blue-600 mr-1"></i> Shared
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="md:col-span-3 flex gap-2 justify-end">
+          <button onclick="resetFilters()" class="btn-secondary px-4 py-2 rounded-md flex items-center">
+            <i class="fas fa-undo mr-2"></i>
+            <span>Reset</span>
+          </button>
+          <button onclick="applyFilters()" class="btn-primary px-4 py-2 rounded-md flex items-center">
+            <i class="fas fa-search mr-2"></i>
+            <span>Apply Filters</span>
           </button>
         </div>
       </div>
@@ -82,8 +206,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% if (hisabs && hisabs.length > 0) { %>
         <% hisabs.forEach(hisab => { %>
-          <div class="card border border-custom rounded-lg p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 hisab-card">
-            <div class="flex flex-col mb-4">
+          <div class="card border border-custom rounded-lg overflow-hidden shadow-md card-animate hisab-card"
+              data-created="<%= new Date(hisab.createdAt).toISOString() %>"
+              data-encrypted="<%= hisab.isEncrypted %>"
+              data-shared="<%= hisab.isShareable %>"
+              data-name="<%= hisab.name %>"
+              data-transactions="<%= hisab.transactions ? hisab.transactions.length : 0 %>">
+            <div class="p-6">
               <div class="flex justify-between items-start mb-3">
                 <h2 class="text-xl font-bold text-custom-primary"><%= hisab.name %></h2>
                 <div class="flex gap-2">
@@ -99,36 +228,38 @@
                   <% } %>
                 </div>
               </div>
-              <div class="text-custom-secondary text-sm mb-3">
-                <i class="far fa-calendar-alt mr-1"></i>
-                <span class="hisab-date"><%= new Date(hisab.createdAt).toLocaleDateString() %></span>
+              
+              <div class="flex items-center text-custom-secondary text-sm mb-4 hisab-date">
+                <i class="far fa-calendar-alt mr-2"></i>
+                <%= new Date(hisab.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
               </div>
-            </div>
-            
-            <div class="bg-custom-gray p-4 rounded-lg mb-4">
-              <p class="text-custom-primary line-clamp-3"><%= hisab.description %></p>
-            </div>
+              
+              <div class="bg-custom-gray p-4 rounded-lg mb-4 h-24 overflow-hidden">
+                <p class="text-custom-primary line-clamp-3"><%= hisab.description %></p>
+              </div>
 
-            <div class="flex justify-between items-center mt-auto">
-              <div class="text-sm text-custom-secondary">
-                <%= hisab.transactions ? hisab.transactions.length : 0 %> transactions
+              <div class="flex justify-between items-center">
+                <div class="text-sm bg-blue-50 dark:bg-blue-900 text-custom-primary px-3 py-1 rounded-full">
+                  <i class="fas fa-exchange-alt mr-1 text-blue-500"></i>
+                  <%= hisab.transactions ? hisab.transactions.length : 0 %> transactions
+                </div>
+                <a href="/viewHisab/<%= hisab._id %>" class="btn-primary px-4 py-2 rounded-md flex items-center group">
+                  <span>View</span>
+                  <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform duration-200"></i>
+                </a>
               </div>
-              <a href="/viewHisab/<%= hisab._id %>" class="btn-primary px-4 py-2 rounded-md flex items-center group">
-                <span>View</span>
-                <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform duration-200"></i>
-              </a>
             </div>
           </div>
         <% }); %>
       <% } else { %>
         <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-12">
-          <div class="bg-custom-gray p-8 rounded-lg">
-            <div class="text-5xl text-blue-600 mb-4">
-              <i class="fas fa-clipboard-list"></i>
+          <div class="card p-8 rounded-lg border border-custom shadow-md">
+            <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+              <i class="fas fa-clipboard-list text-blue-600 dark:text-blue-400 text-3xl"></i>
             </div>
             <h3 class="text-xl font-semibold text-custom-primary mb-2">No Hisabs Found</h3>
-            <p class="text-custom-secondary mb-6">You haven't created any hisabs yet. Create your first one to get started!</p>
-            <a href="/createHisab" class="btn-primary px-6 py-3 rounded-md inline-flex items-center">
+            <p class="text-custom-secondary mb-6 max-w-md mx-auto">You haven't created any hisabs yet. Create your first one to get started tracking your finances!</p>
+            <a href="/createHisab" class="btn-primary px-6 py-3 rounded-md inline-flex items-center pulse-btn">
               <i class="fas fa-plus mr-2"></i>
               <span>Create Your First Hisab</span>
             </a>
@@ -137,10 +268,24 @@
       <% } %>
     </div>
 
+    <!-- No Results Message (hidden by default) -->
+    <div id="noResultsContainer" class="hidden mt-8 text-center py-12">
+      <div class="card p-8 rounded-lg border border-custom shadow-md">
+        <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="fas fa-search text-blue-600 dark:text-blue-400 text-3xl"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-custom-primary mb-2">No Matching Results</h3>
+        <p class="text-custom-secondary mb-6">Try adjusting your filters to see more results.</p>
+        <button onclick="resetFilters()" class="btn-secondary px-6 py-3 rounded-md">
+          <i class="fas fa-undo mr-2"></i> Reset Filters
+        </button>
+      </div>
+    </div>
+
     <!-- Create Hisab Button (Fixed) -->
     <% if (hisabs && hisabs.length > 0) { %>
       <div class="fixed bottom-6 right-6">
-        <a href="/createHisab" class="btn-primary h-14 w-14 rounded-full flex items-center justify-center shadow-lg">
+        <a href="/createHisab" class="btn-primary h-14 w-14 rounded-full flex items-center justify-center shadow-lg pulse-btn">
           <i class="fas fa-plus text-xl"></i>
         </a>
       </div>
@@ -149,54 +294,71 @@
     <%- include('partials/footer', { 
       isLoggedIn: true,
       scripts: `
+        // Toggle Filters
+        const toggleFilters = document.getElementById('toggleFilters');
+        const filterContainer = document.getElementById('filterContainer');
+        
+        toggleFilters.addEventListener('click', function() {
+          filterContainer.classList.toggle('hidden');
+        });
+
         // Filter Functionality
         function applyFilters() {
           const sortBy = document.getElementById('filter').value;
           const startDate = document.getElementById('startDate').value;
           const endDate = document.getElementById('endDate').value;
+          const filterEncrypted = document.getElementById('filterEncrypted').checked;
+          const filterShareable = document.getElementById('filterShareable').checked;
 
           const cards = document.querySelectorAll('.hisab-card');
           const cardsArray = Array.from(cards);
-
-          // Sort cards
-          cardsArray.sort((a, b) => {
-            const dateA = new Date(a.querySelector('.hisab-date').textContent);
-            const dateB = new Date(b.querySelector('.hisab-date').textContent);
-            return sortBy === 'latest' ? dateB - dateA : dateA - dateB;
-          });
-
-          // Filter by date range
+          
+          // Apply filters
           const filteredCards = cardsArray.filter(card => {
-            const cardDate = new Date(card.querySelector('.hisab-date').textContent);
+            // Date filtering
+            const cardDate = new Date(card.dataset.created);
             const start = startDate ? new Date(startDate) : null;
             const end = endDate ? new Date(endDate) : null;
-
+            
             if (start && cardDate < start) return false;
-            if (end && cardDate > end) return false;
+            if (end) {
+              const endDateWithTime = new Date(end);
+              endDateWithTime.setHours(23, 59, 59, 999);
+              if (cardDate > endDateWithTime) return false;
+            }
+            
+            // Encrypted/Shareable filtering
+            if (filterEncrypted && card.dataset.encrypted !== 'true') return false;
+            if (filterShareable && card.dataset.shared !== 'true') return false;
+            
             return true;
+          });
+          
+          // Sort cards
+          filteredCards.sort((a, b) => {
+            if (sortBy === 'latest') {
+              return new Date(b.dataset.created) - new Date(a.dataset.created);
+            } else if (sortBy === 'oldest') {
+              return new Date(a.dataset.created) - new Date(b.dataset.created);
+            } else if (sortBy === 'alphabetical') {
+              return a.dataset.name.localeCompare(b.dataset.name);
+            } else if (sortBy === 'transactions') {
+              return parseInt(b.dataset.transactions) - parseInt(a.dataset.transactions);
+            }
           });
 
           // Clear and re-append cards
           const container = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
           container.innerHTML = '';
           
+          const noResultsContainer = document.getElementById('noResultsContainer');
+          
           if (filteredCards.length === 0) {
-            const noResults = document.createElement('div');
-            noResults.className = 'col-span-1 md:col-span-2 lg:col-span-3 text-center py-12';
-            noResults.innerHTML = \`
-              <div class="bg-custom-gray p-8 rounded-lg">
-                <div class="text-5xl text-blue-600 mb-4">
-                  <i class="fas fa-search"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-custom-primary mb-2">No Matching Results</h3>
-                <p class="text-custom-secondary mb-6">Try adjusting your filters to see more results.</p>
-                <button onclick="resetFilters()" class="btn-secondary px-6 py-3 rounded-md">
-                  Reset Filters
-                </button>
-              </div>
-            \`;
-            container.appendChild(noResults);
+            container.classList.add('hidden');
+            noResultsContainer.classList.remove('hidden');
           } else {
+            container.classList.remove('hidden');
+            noResultsContainer.classList.add('hidden');
             filteredCards.forEach(card => container.appendChild(card));
           }
         }
@@ -205,12 +367,14 @@
           document.getElementById('filter').value = 'latest';
           document.getElementById('startDate').value = '';
           document.getElementById('endDate').value = '';
+          document.getElementById('filterEncrypted').checked = false;
+          document.getElementById('filterShareable').checked = false;
           applyFilters();
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-          applyFilters();
+          resetFilters();
         });
       `
     }) %>

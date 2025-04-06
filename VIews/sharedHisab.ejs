@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,9 +12,11 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link href="/css/responsive.css" rel="stylesheet" />
   </head>
-  <body class="bg-gray-50">
-    <nav class="bg-white shadow-md">
+  <body class="bg-custom-white">
+    <nav class="bg-custom-white shadow-md border-b border-custom sticky top-0 z-10">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
@@ -23,23 +25,26 @@
             </a>
           </div>
           <div class="flex items-center gap-3">
+            <button id="themeToggle" class="theme-toggle p-2 rounded-full hover:bg-custom-gray">
+              <i class="fas fa-moon text-custom-primary"></i>
+            </button>
             <% if (isLoggedIn) { %>
-              <a href="/dashboard" class="px-4 py-2 rounded-md border border-blue-600 text-blue-600 hover:bg-blue-50">Dashboard</a>
-              <a href="/logout" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">LogOut</a>
+              <a href="/dashboard" class="btn-secondary px-4 py-2 rounded-md">Dashboard</a>
+              <a href="/logout" class="btn-primary px-4 py-2 rounded-md">LogOut</a>
             <% } else { %>
-              <a href="/login" class="px-4 py-2 rounded-md border border-blue-600 text-blue-600 hover:bg-blue-50">Login</a>
-              <a href="/register" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Register</a>
+              <a href="/login" class="btn-secondary px-4 py-2 rounded-md">Login</a>
+              <a href="/register" class="btn-primary px-4 py-2 rounded-md">Register</a>
             <% } %>
           </div>
         </div>
       </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto mt-10 px-4">
-      <div class="bg-white rounded-lg shadow-md p-8">
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="text-3xl font-bold text-gray-900"><%= hisab.name %></h1>
-          <div class="flex items-center gap-4">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+      <div class="card p-4 md:p-6 lg:p-8 rounded-lg shadow-md">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+          <h1 class="text-2xl md:text-3xl font-bold text-custom-primary"><%= hisab.name %></h1>
+          <div class="flex flex-wrap items-center gap-2">
             <% if(hisab.isEncrypted) { %>
               <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
                 <i class="fas fa-lock text-green-600 mr-2"></i>
@@ -53,38 +58,38 @@
           </div>
         </div>
 
-        <div class="bg-gray-50 p-6 rounded-lg mb-6">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Description</h2>
-          <p class="text-gray-700 leading-relaxed"><%= hisab.description %></p>
+        <div class="card-section p-4 md:p-6 rounded-lg mb-6">
+          <h2 class="text-xl font-semibold text-custom-primary mb-4">Description</h2>
+          <p class="text-custom-secondary leading-relaxed"><%= hisab.description %></p>
         </div>
 
         <!-- Transactions Section -->
-        <div class="bg-gray-50 p-6 rounded-lg">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Transactions</h2>
+        <div class="card-section p-4 md:p-6 rounded-lg">
+          <h2 class="text-xl font-semibold text-custom-primary mb-4">Transactions</h2>
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-100">
+            <table class="min-w-full divide-y divide-custom">
+              <thead class="bg-custom-gray">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Date</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Description</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Amount</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-custom-secondary uppercase tracking-wider">Type</th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
+              <tbody class="bg-custom-white divide-y divide-custom">
                 <% if (hisab.transactions && hisab.transactions.length > 0) { %>
                   <% hisab.transactions.forEach(transaction => { %>
                     <tr>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td class="px-4 py-3 whitespace-nowrap text-sm text-custom-secondary">
                         <%= new Date(transaction.date).toLocaleDateString() %>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td class="px-4 py-3 text-sm text-custom-primary">
                         <%= transaction.description %>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td class="px-4 py-3 whitespace-nowrap text-sm text-custom-primary">
                         ₹<%= transaction.amount.toFixed(2) %>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      <td class="px-4 py-3 whitespace-nowrap text-sm">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= transaction.type === 'credit' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
                           <%= transaction.type %>
                         </span>
@@ -93,7 +98,7 @@
                   <% }); %>
                 <% } else { %>
                   <tr>
-                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                    <td colspan="4" class="px-6 py-4 text-center text-custom-secondary">
                       No transactions yet.
                     </td>
                   </tr>
@@ -104,5 +109,28 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // Theme Toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = themeToggle.querySelector('i');
+      
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+      });
+
+      function updateThemeIcon(theme) {
+        themeIcon.className = theme === 'light' ? 'fas fa-moon text-custom-primary' : 'fas fa-sun text-custom-primary';
+      }
+    </script>
   </body>
 </html> 
