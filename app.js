@@ -8,13 +8,38 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const Hisab = require("./Models/hisab.model");
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config();
 
-const db = async () => {
-  await connectToDatabase();
+// Initialize database connection only once
+const initializeApp = async () => {
+  try {
+    await connectToDatabase();
+    console.log("Database initialized");
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+  }
 };
-db();
+
+// In development, immediately initialize
+if (process.env.NODE_ENV !== 'production') {
+  initializeApp();
+} else {
+  // In production (Vercel), initialize on first request
+  app.use(async (req, res, next) => {
+    try {
+      if (!global.mongooseInitialized) {
+        await connectToDatabase();
+        global.mongooseInitialized = true;
+      }
+      next();
+    } catch (error) {
+      console.error("Database connection error:", error);
+      res.status(500).send("Database connection error");
+    }
+  });
+}
 
 // middleware
 app.use(
@@ -22,9 +47,20 @@ app.use(
     secret: process.env.SESSION_SECRET || "your-secret-key",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }, // Set to true in production
+    cookie: { 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax', // Helps with CSRF protection
+      httpOnly: true, // Helps protect against XSS attacks
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    },
   })
 );
+
+// Set up cookie parser with same options
+app.use(cookieParser(process.env.SESSION_SECRET || "your-secret-key"));
+
+// Trust the Vercel proxy to properly set secure cookies
+app.set('trust proxy', 1);
 
 function isloggedin(req, res, next) {
   const token = req.cookies.token;
@@ -39,10 +75,11 @@ function isloggedin(req, res, next) {
   next();
 }
 
+app.set("views", path.join(__dirname, "VIews"));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 // all get routes
 
@@ -557,5 +594,26 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`App is running on port ${PORT}`);
   });
 }
+
+// Add this at the top of the file after imports
+if (process.env.NODE_ENV === 'production') {
+  // Catch unhandled promises in production
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  });
+}
+
+// Add this before module.exports = app;
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).send('Internal Server Error. Please try again later.');
+});
+
+// Catch-all route for 404s
+app.use((req, res) => {
+  console.log('404 Not Found:', req.url);
+  res.status(404).send('Page not found');
+});
 
 module.exports = app;
