@@ -81,76 +81,79 @@
                 </div>
                 
                 <div class="p-6 md:p-8">
-                    <form action="/createNewHisab" method="POST" class="space-y-6">
+                    <form action="/createNewHisab" method="POST" class="space-y-8">
                         <div class="form-group">
-                            <label for="hisabname" class="form-label text-custom-primary flex items-center">
+                            <label for="hisabname" class="form-label text-custom-primary flex items-center text-lg font-medium">
                                 <i class="fas fa-file-signature mr-2 text-blue-600"></i>
                                 Hisab Name
                             </label>
-                            <div class="relative">
+                            <div class="relative mt-2">
                                 <input 
                                     type="text" 
                                     id="hisabname" 
                                     name="hisabname" 
                                     required
                                     placeholder="Enter a name for your hisab" 
-                                    class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+                                    class="form-control bg-custom-white text-custom-primary border border-custom rounded-lg pl-12 py-4 w-full transition-all focus:ring-2 focus:ring-blue-500"
                                     autofocus
                                 >
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-pen input-icon"></i>
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-pen input-icon text-lg"></i>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="hisabdescription" class="form-label text-custom-primary flex items-center">
+                            <label for="hisabdescription" class="form-label text-custom-primary flex items-center text-lg font-medium">
                                 <i class="fas fa-align-left mr-2 text-blue-600"></i>
                                 Description
                             </label>
-                            <div class="relative">
+                            <div class="relative mt-2">
                                 <textarea 
                                     id="hisabdescription" 
                                     name="hisabdescription" 
                                     rows="4" 
                                     required
                                     placeholder="Describe the purpose of this hisab"
-                                    class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+                                    class="form-control bg-custom-white text-custom-primary border border-custom rounded-lg pl-12 py-4 w-full transition-all focus:ring-2 focus:ring-blue-500"
                                 ></textarea>
-                                <div class="absolute top-3 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-info-circle input-icon"></i>
+                                <div class="absolute top-4 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-info-circle input-icon text-lg"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
-                            <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
-                                <i class="fas fa-cog mr-2"></i>
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100 shadow-sm">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-5 flex items-center">
+                                <i class="fas fa-cog mr-3 text-blue-600"></i>
                                 Hisab Settings
                             </h3>
                             
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div class="flex items-center bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all transform hover:-translate-y-1">
                                     <input 
                                         type="checkbox" 
                                         id="isencrypted" 
                                         name="isencrypted" 
                                         onchange="togglePasscodeFields()"
-                                        class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-custom rounded"
+                                        class="h-6 w-6 text-blue-600 focus:ring-blue-500 border-custom rounded"
                                     >
-                                    <label for="isencrypted" class="ml-3 block text-custom-primary">
-                                        <div class="font-medium"><i class="fas fa-lock text-blue-600 mr-2"></i> Encrypt this Hisab</div>
-                                        <p class="text-xs text-gray-500 mt-1">Add passcode protection to your financial data</p>
+                                    <label for="isencrypted" class="ml-4 block text-custom-primary cursor-pointer">
+                                        <div class="font-medium text-lg"><i class="fas fa-lock text-blue-600 mr-2"></i> Encrypt this Hisab</div>
+                                        <p class="text-sm text-gray-500 mt-1">Add passcode protection to your financial data</p>
                                     </label>
                                 </div>
 
-                                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                <div class="flex items-center bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all transform hover:-translate-y-1">
                                     <input 
                                         type="checkbox" 
                                         id="isshareable" 
                                         name="isshareable"
-                                        class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-custom rounded"
+                                        class="h-6 w-6 text-blue-600 focus:ring-blue-500 border-custom rounded"
                                     >
+                                    <label for="isshareable" class="ml-4 block text-custom-primary cursor-pointer">
+                                        <div class="font-medium text-lg"><i class="fas fa-share-alt text-blue-600 mr-2"></i> Make Shareable</div>
+                                        <p class="text-sm text-gray-500 mt-1">Allow sharing with family or business partners</p>
                                     <label for="isshareable" class="ml-3 block text-custom-primary">
                                         <div class="font-medium"><i class="fas fa-share-alt text-blue-600 mr-2"></i> Make Shareable</div>
                                         <p class="text-xs text-gray-500 mt-1">Allow sharing with family or business partners</p>
