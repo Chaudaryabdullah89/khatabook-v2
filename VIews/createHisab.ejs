@@ -1,122 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Hisab</title>
+    <title>Create New Hisab - KhataBook</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script>
-        function togglePasscodeFields() {
-            const isEncrypted = document.getElementById('isencrypted').checked;
-            const passcodeFields = document.getElementById('passcodeFields');
-            if (isEncrypted) {
-                passcodeFields.classList.remove('hidden');
-            } else {
-                passcodeFields.classList.add('hidden');
-            }
-        }
-    </script>
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
+    <style>
+      .create-animation {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+      
+      .input-icon {
+        color: #9ca3af;
+        transition: color 0.2s ease;
+      }
+      
+      .form-control:focus ~ .input-icon {
+        color: #3b82f6;
+      }
+      
+      .btn-shine {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .btn-shine:after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+        transform: rotate(30deg);
+        transition: all 0.5s;
+        opacity: 0;
+      }
+      
+      .btn-shine:hover:after {
+        animation: shine 1.5s ease-out;
+        opacity: 1;
+      }
+      
+      @keyframes shine {
+        0% { left: -50%; opacity: 0; }
+        25% { opacity: 1; }
+        100% { left: 150%; opacity: 0; }
+      }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-custom-white">
     <%- include('partials/header', { 
-        title: 'Create New Hisab',
+        title: 'Create New Hisab', 
         isLoggedIn: true,
         pageTitle: 'Create New Hisab'
     }) %>
 
-    <div class="max-w-2xl mx-auto mb-8">
-        <div class="card p-4 md:p-6 lg:p-8 rounded-lg shadow-md">
-            <form action="/createNewHisab" method="POST" class="space-y-6">
-                <div class="form-group">
-                    <label for="hisabname" class="form-label text-custom-primary">Hisab Name</label>
-                    <input 
-                        type="text" 
-                        id="hisabname" 
-                        name="hisabname" 
-                        required
-                        placeholder="Enter a name for your hisab"
-                        class="form-control bg-custom-white text-custom-primary border border-custom"
-                    >
+    <div class="flex min-h-[calc(100vh-10rem)] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-3xl create-animation">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+                    <h2 class="text-2xl font-bold text-white flex items-center">
+                        <i class="fas fa-book-open mr-3"></i>
+                        Create New Hisab
+                    </h2>
+                    <p class="text-blue-100 mt-2">Set up a new financial record to track your transactions</p>
                 </div>
+                
+                <div class="p-6 md:p-8">
+                    <form action="/createNewHisab" method="POST" class="space-y-6">
+                        <div class="form-group">
+                            <label for="hisabname" class="form-label text-custom-primary flex items-center">
+                                <i class="fas fa-file-signature mr-2 text-blue-600"></i>
+                                Hisab Name
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="hisabname" 
+                                    name="hisabname" 
+                                    required
+                                    placeholder="Enter a name for your hisab" 
+                                    class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+                                    autofocus
+                                >
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-pen input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="hisabdescription" class="form-label text-custom-primary">Description</label>
-                    <textarea 
-                        id="hisabdescription" 
-                        name="hisabdescription" 
-                        rows="4" 
-                        required
-                        placeholder="Describe the purpose of this hisab"
-                        class="form-control bg-custom-white text-custom-primary border border-custom"
-                    ></textarea>
+                        <div class="form-group">
+                            <label for="hisabdescription" class="form-label text-custom-primary flex items-center">
+                                <i class="fas fa-align-left mr-2 text-blue-600"></i>
+                                Description
+                            </label>
+                            <div class="relative">
+                                <textarea 
+                                    id="hisabdescription" 
+                                    name="hisabdescription" 
+                                    rows="4" 
+                                    required
+                                    placeholder="Describe the purpose of this hisab"
+                                    class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+                                ></textarea>
+                                <div class="absolute top-3 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-info-circle input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
+                            <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                                <i class="fas fa-cog mr-2"></i>
+                                Hisab Settings
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                    <input 
+                                        type="checkbox" 
+                                        id="isencrypted" 
+                                        name="isencrypted" 
+                                        onchange="togglePasscodeFields()"
+                                        class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-custom rounded"
+                                    >
+                                    <label for="isencrypted" class="ml-3 block text-custom-primary">
+                                        <div class="font-medium"><i class="fas fa-lock text-blue-600 mr-2"></i> Encrypt this Hisab</div>
+                                        <p class="text-xs text-gray-500 mt-1">Add passcode protection to your financial data</p>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                    <input 
+                                        type="checkbox" 
+                                        id="isshareable" 
+                                        name="isshareable"
+                                        class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-custom rounded"
+                                    >
+                                    <label for="isshareable" class="ml-3 block text-custom-primary">
+                                        <div class="font-medium"><i class="fas fa-share-alt text-blue-600 mr-2"></i> Make Shareable</div>
+                                        <p class="text-xs text-gray-500 mt-1">Allow sharing with family or business partners</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="passcodeFields" class="hidden mt-5 bg-white p-5 rounded-lg border border-blue-100 shadow-sm">
+                                <h4 class="text-md font-semibold text-blue-800 mb-4 flex items-center">
+                                    <i class="fas fa-shield-alt mr-2"></i>
+                                    Security Settings
+                                </h4>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label for="passcode" class="form-label text-custom-primary flex items-center">
+                                            <i class="fas fa-key mr-2 text-blue-600"></i>
+                                            Passcode
+                                        </label>
+                                        <div class="relative">
+                                            <input 
+                                                type="password" 
+                                                id="passcode" 
+                                                name="passcode"
+                                                placeholder="Enter 4-6 digit passcode"
+                                                class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+                                                minlength="4" 
+                                                maxlength="6"
+                                            >
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <i class="fas fa-lock input-icon"></i>
+                                            </div>
+                                            <button 
+                                                type="button" 
+                                                id="togglePasscode" 
+                                                class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                                onclick="togglePasscodeVisibility('passcode', 'togglePasscodeIcon')"
+                                            >
+                                                <i class="fas fa-eye input-icon" id="togglePasscodeIcon"></i>
+                                            </button>
+                                        </div>
+                                        <p class="mt-1 text-xs text-custom-secondary">Enter a 4-6 digit passcode</p>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="confirmPasscode" class="form-label text-custom-primary flex items-center">
+                                            <i class="fas fa-check-double mr-2 text-blue-600"></i>
+                                            Confirm Passcode
+                                        </label>
+                                        <div class="relative">
+                                            <input 
+                                                type="password" 
+                                                id="confirmPasscode" 
+                                                name="confirmPasscode"
+                                                placeholder="Confirm your passcode"
+                                                class="form-control bg-custom-white text-custom-primary border border-custom pl-10 py-3"
+                                                minlength="4" 
+                                                maxlength="6"
+                                            >
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <i class="fas fa-lock input-icon"></i>
+                                            </div>
+                                            <button 
+                                                type="button" 
+                                                id="toggleConfirmPasscode" 
+                                                class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                                onclick="togglePasscodeVisibility('confirmPasscode', 'toggleConfirmPasscodeIcon')"
+                                            >
+                                                <i class="fas fa-eye input-icon" id="toggleConfirmPasscodeIcon"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
+                            <a href="/dashboard" class="btn-secondary px-6 py-3 rounded-md text-center flex items-center justify-center">
+                                <i class="fas fa-times mr-2"></i>
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn-primary px-6 py-3 rounded-md btn-shine flex items-center justify-center">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Create Hisab
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="flex items-center bg-custom-gray p-3 rounded-lg">
-                        <input 
-                            type="checkbox" 
-                            id="isencrypted" 
-                            name="isencrypted" 
-                            onchange="togglePasscodeFields()"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-custom rounded"
-                        >
-                        <label for="isencrypted" class="ml-2 block text-sm text-custom-primary">
-                            <i class="fas fa-lock text-blue-600 mr-1"></i> Encrypt this Hisab
-                        </label>
-                    </div>
-
-                    <div class="flex items-center bg-custom-gray p-3 rounded-lg">
-                        <input 
-                            type="checkbox" 
-                            id="isshareable" 
-                            name="isshareable"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-custom rounded"
-                        >
-                        <label for="isshareable" class="ml-2 block text-sm text-custom-primary">
-                            <i class="fas fa-share-alt text-blue-600 mr-1"></i> Make Shareable
-                        </label>
-                    </div>
-                </div>
-
-                <div id="passcodeFields" class="hidden space-y-4 bg-custom-gray p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold text-custom-primary mb-2">Security Settings</h3>
-                    <div class="form-group">
-                        <label for="passcode" class="form-label text-custom-primary">Passcode</label>
-                        <input 
-                            type="password" 
-                            id="passcode" 
-                            name="passcode"
-                            placeholder="Enter 4-6 digit passcode"
-                            class="form-control bg-custom-white text-custom-primary border border-custom"
-                            minlength="4" 
-                            maxlength="6"
-                        >
-                        <p class="mt-1 text-xs text-custom-secondary">Enter a 4-6 digit passcode to secure your hisab</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPasscode" class="form-label text-custom-primary">Confirm Passcode</label>
-                        <input 
-                            type="password" 
-                            id="confirmPasscode" 
-                            name="confirmPasscode"
-                            placeholder="Confirm your passcode"
-                            class="form-control bg-custom-white text-custom-primary border border-custom"
-                            minlength="4" 
-                            maxlength="6"
-                        >
-                    </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
-                    <a href="/dashboard" class="btn-secondary px-6 py-2 rounded-md text-center">
-                        Cancel
-                    </a>
-                    <button type="submit" class="btn-primary px-6 py-2 rounded-md">
-                        Create Hisab
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -131,6 +254,21 @@
                     passcodeFields.classList.remove('hidden');
                 } else {
                     passcodeFields.classList.add('hidden');
+                }
+            }
+            
+            function togglePasscodeVisibility(inputId, iconId) {
+                const input = document.getElementById(inputId);
+                const icon = document.getElementById(iconId);
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
                 }
             }
             
