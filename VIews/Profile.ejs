@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile - KhataBook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+  </head>
+  <body class="bg-custom-white">
+    <nav class="bg-custom-white shadow-md border-b border-custom sticky top-0 z-10">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/dashboard" class="text-2xl font-bold text-blue-600">
+              <i class="fas fa-book-open mr-2"></i>KhataBook
+            </a>
+          </div>
+          <div class="flex items-center gap-4">
+            <button id="themeToggle" class="theme-toggle p-2 rounded-full hover:bg-custom-gray">
+              <i class="fas fa-moon text-custom-primary"></i>
+            </button>
+            <div class="flex items-center gap-3">
+              <a href="/dashboard" class="btn-secondary px-4 py-2 rounded-md">Dashboard</a>
+              <a href="/logout" class="btn-primary px-4 py-2 rounded-md">LogOut</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <!-- Profile Header -->
+      <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-lg p-8 mb-8">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+          <div class="flex items-center mb-4 md:mb-0">
+            <div class="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center mr-6 shadow-md border-4 border-white">
+              <span class="text-4xl font-bold text-blue-600"><%= user.fullname.charAt(0) %></span>
+            </div>
+            <div>
+              <h1 class="text-3xl font-bold text-white"><%= user.fullname %></h1>
+              <p class="text-blue-100">@<%= user.username %></p>
+              <div class="flex items-center mt-2">
+                <i class="fas fa-envelope text-blue-100 mr-2"></i>
+                <p class="text-blue-100"><%= user.email %></p>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+              <p class="text-white text-2xl font-bold"><%= hisabs.length %></p>
+              <p class="text-blue-100">Total Hisabs</p>
+            </div>
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+              <p class="text-white text-2xl font-bold"><%= new Date(user.createdAt).toLocaleDateString() %></p>
+              <p class="text-blue-100">Member Since</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Profile Info Card -->
+        <div class="col-span-1">
+          <div class="card p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold text-custom-primary mb-4 flex items-center">
+              <i class="fas fa-user-circle mr-2"></i> Profile Details
+            </h2>
+            
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                  <i class="fas fa-user text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-custom-secondary">Username</p>
+                  <p class="font-medium text-custom-primary"><%= user.username %></p>
+                </div>
+              </div>
+              
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                  <i class="fas fa-id-card text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-custom-secondary">Full Name</p>
+                  <p class="font-medium text-custom-primary"><%= user.fullname %></p>
+                </div>
+              </div>
+              
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                  <i class="fas fa-envelope text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-custom-secondary">Email Address</p>
+                  <p class="font-medium text-custom-primary"><%= user.email %></p>
+                </div>
+              </div>
+              
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                  <i class="fas fa-calendar-alt text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-custom-secondary">Member Since</p>
+                  <p class="font-medium text-custom-primary"><%= new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold text-custom-primary mb-4 flex items-center">
+              <i class="fas fa-chart-pie mr-2"></i> Account Statistics
+            </h2>
+            
+            <div class="space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-custom-secondary">Total Hisabs</span>
+                <span class="font-semibold text-custom-primary px-3 py-1 bg-blue-100 rounded-full"><%= hisabs.length %></span>
+              </div>
+              
+              <div class="flex justify-between items-center">
+                <span class="text-custom-secondary">Encrypted Hisabs</span>
+                <span class="font-semibold text-custom-primary px-3 py-1 bg-green-100 rounded-full">
+                  <%= hisabs.filter(h => h.isEncrypted).length %>
+                </span>
+              </div>
+              
+              <div class="flex justify-between items-center">
+                <span class="text-custom-secondary">Shared Hisabs</span>
+                <span class="font-semibold text-custom-primary px-3 py-1 bg-indigo-100 rounded-full">
+                  <%= hisabs.filter(h => h.isShareable).length %>
+                </span>
+              </div>
+              
+              <div class="flex justify-between items-center">
+                <span class="text-custom-secondary">Last Activity</span>
+                <span class="font-semibold text-custom-primary">
+                  <%= hisabs.length > 0 ? new Date(Math.max(...hisabs.map(h => new Date(h.updatedAt)))).toLocaleDateString() : 'N/A' %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div class="col-span-1 md:col-span-2">
+          <div class="card p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold text-custom-primary mb-4 flex items-center">
+              <i class="fas fa-user-edit mr-2"></i> Edit Profile
+            </h2>
+            
+            <% if (locals.success) { %>
+              <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                <%= success %>
+              </div>
+            <% } %>
+            
+            <% if (locals.error) { %>
+              <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <%= error %>
+              </div>
+            <% } %>
+            
+            <form action="/updateProfile" method="POST">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label for="username" class="block text-sm font-medium text-custom-secondary mb-1">Username</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="fas fa-user text-gray-400"></i>
+                    </div>
+                    <input type="text" id="username" name="username" value="<%= user.username %>" class="w-full rounded-md border border-custom p-2 pl-10">
+                  </div>
+                </div>
+                <div>
+                  <label for="fullname" class="block text-sm font-medium text-custom-secondary mb-1">Full Name</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="fas fa-id-card text-gray-400"></i>
+                    </div>
+                    <input type="text" id="fullname" name="fullname" value="<%= user.fullname %>" class="w-full rounded-md border border-custom p-2 pl-10">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-custom-secondary mb-1">Email</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-envelope text-gray-400"></i>
+                  </div>
+                  <input type="email" id="email" name="email" value="<%= user.email %>" class="w-full rounded-md border border-custom p-2 pl-10">
+                </div>
+              </div>
+              
+              <button type="submit" class="btn-primary px-4 py-2 rounded-md w-full flex items-center justify-center">
+                <i class="fas fa-save mr-2"></i> Update Profile
+              </button>
+            </form>
+          </div>
+          
+          <!-- Change Password Form -->
+          <div class="card p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold text-custom-primary mb-4 flex items-center">
+              <i class="fas fa-lock mr-2"></i> Change Password
+            </h2>
+            
+            <form action="/changePassword" method="POST">
+              <div class="mb-4">
+                <label for="currentPassword" class="block text-sm font-medium text-custom-secondary mb-1">Current Password</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-key text-gray-400"></i>
+                  </div>
+                  <input type="password" id="currentPassword" name="currentPassword" class="w-full rounded-md border border-custom p-2 pl-10">
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="newPassword" class="block text-sm font-medium text-custom-secondary mb-1">New Password</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-lock text-gray-400"></i>
+                  </div>
+                  <input type="password" id="newPassword" name="newPassword" class="w-full rounded-md border border-custom p-2 pl-10">
+                </div>
+                <div class="mt-1 text-xs text-gray-500">
+                  Password should be at least 8 characters and include letters and numbers
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="confirmPassword" class="block text-sm font-medium text-custom-secondary mb-1">Confirm New Password</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-lock text-gray-400"></i>
+                  </div>
+                  <input type="password" id="confirmPassword" name="confirmPassword" class="w-full rounded-md border border-custom p-2 pl-10">
+                </div>
+              </div>
+              
+              <button type="submit" class="btn-primary px-4 py-2 rounded-md w-full flex items-center justify-center">
+                <i class="fas fa-key mr-2"></i> Change Password
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Recent Hisabs Section -->
+      <div class="mt-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-custom-primary flex items-center">
+            <i class="fas fa-history mr-2"></i> Your Recent Hisabs
+          </h2>
+          <a href="/dashboard" class="text-blue-600 hover:text-blue-800 flex items-center">
+            View All <i class="fas fa-arrow-right ml-2"></i>
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% if (hisabs && hisabs.length > 0) { %>
+            <% hisabs.slice(0, 6).forEach(hisab => { %>
+              <div class="card p-6 rounded-lg border border-custom transition-all duration-300 hover:shadow-lg hover:border-blue-300">
+                <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-semibold text-custom-primary"><%= hisab.name %></h3>
+                  <div class="flex gap-2">
+                    <% if(hisab.isEncrypted) { %>
+                      <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                        <i class="fas fa-lock text-green-600 mr-1"></i> Encrypted
+                      </span>
+                    <% } %>
+                    <% if(hisab.isShareable) { %>
+                      <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                        <i class="fas fa-share-alt text-blue-600 mr-1"></i> Shared
+                      </span>
+                    <% } %>
+                  </div>
+                </div>
+                
+                <p class="text-custom-secondary mb-4 line-clamp-2"><%= hisab.description %></p>
+                
+                <div class="flex flex-col gap-2 mb-4">
+                  <div class="flex items-center text-sm text-custom-secondary">
+                    <i class="far fa-calendar-alt mr-2 w-4 text-center"></i>
+                    <span>Created: <%= new Date(hisab.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                  </div>
+                  <div class="flex items-center text-sm text-custom-secondary">
+                    <i class="far fa-clock mr-2 w-4 text-center"></i>
+                    <span>Updated: <%= new Date(hisab.updatedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                  </div>
+                </div>
+                
+                <div class="flex justify-between items-center mt-auto pt-3 border-t border-custom">
+                  <div class="text-sm font-medium text-custom-primary">
+                    <% if (hisab.entries && hisab.entries.length) { %>
+                      <span><%= hisab.entries.length %> entries</span>
+                    <% } else { %>
+                      <span>No entries yet</span>
+                    <% } %>
+                  </div>
+                  <a href="/viewHisab/<%= hisab._id %>" class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                    View Details <i class="fas fa-chevron-right ml-1"></i>
+                  </a>
+                </div>
+              </div>
+            <% }); %>
+            
+            <% if (hisabs.length > 6) { %>
+              <div class="card p-6 rounded-lg border border-custom flex flex-col items-center justify-center text-center hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                  <i class="fas fa-list text-blue-600 text-xl"></i>
+                </div>
+                <p class="text-custom-secondary mb-4">View all your <%= hisabs.length %> hisabs</p>
+                <a href="/dashboard" class="btn-primary px-4 py-2 rounded-md flex items-center">
+                  <i class="fas fa-th-list mr-2"></i> Go to Dashboard
+                </a>
+              </div>
+            <% } %>
+          <% } else { %>
+            <div class="col-span-3 text-center py-12 bg-blue-50 rounded-lg border border-blue-100">
+              <div class="w-20 h-20 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-book-open text-blue-600 text-3xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-custom-primary mb-2">No Hisabs Yet</h3>
+              <p class="text-custom-secondary mb-6 max-w-md mx-auto">You haven't created any hisabs yet. Start tracking your finances by creating your first hisab.</p>
+              <a href="/createHisab" class="btn-primary px-6 py-3 rounded-md inline-flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                <span>Create Your First Hisab</span>
+              </a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Theme Toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = themeToggle.querySelector('i');
+      
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+      });
+
+      function updateThemeIcon(theme) {
+        themeIcon.className = theme === 'light' ? 'fas fa-moon text-custom-primary' : 'fas fa-sun text-custom-primary';
+      }
+      
+      // Password confirmation validation
+      const newPasswordInput = document.getElementById('newPassword');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      
+      function validatePassword() {
+        if(newPasswordInput.value !== confirmPasswordInput.value) {
+          confirmPasswordInput.setCustomValidity("Passwords don't match");
+        } else {
+          confirmPasswordInput.setCustomValidity('');
+        }
+      }
+      
+      if(newPasswordInput && confirmPasswordInput) {
+        newPasswordInput.addEventListener('change', validatePassword);
+        confirmPasswordInput.addEventListener('keyup', validatePassword);
+      }
+    </script>
+  </body>
+</html>

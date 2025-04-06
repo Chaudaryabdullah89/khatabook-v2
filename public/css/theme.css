@@ -1,0 +1,115 @@
+/* Theme Variables */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --border-color: #e2e8f0;
+  --hover-bg: #edf2f7;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --transition-speed: 0.3s;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --text-primary: #f7fafc;
+  --text-secondary: #e2e8f0;
+  --border-color: #4a5568;
+  --hover-bg: #2d3748;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme-aware Classes */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.bg-custom-white {
+  background-color: var(--bg-primary);
+  transition: background-color var(--transition-speed);
+}
+
+.bg-custom-gray {
+  background-color: var(--bg-secondary);
+  transition: background-color var(--transition-speed);
+}
+
+.text-custom-primary {
+  color: var(--text-primary);
+  transition: color var(--transition-speed);
+}
+
+.text-custom-secondary {
+  color: var(--text-secondary);
+  transition: color var(--transition-speed);
+}
+
+.border-custom {
+  border-color: var(--border-color);
+  transition: border-color var(--transition-speed);
+}
+
+.hover\:bg-custom-gray:hover {
+  background-color: var(--hover-bg);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  transition: transform var(--transition-speed);
+}
+
+.theme-toggle:hover {
+  transform: rotate(15deg);
+}
+
+/* Form Elements */
+input, select, textarea {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  transition: background-color var(--transition-speed), 
+              color var(--transition-speed), 
+              border-color var(--transition-speed);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+/* Cards and Containers */
+.card {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  box-shadow: var(--card-shadow);
+  transition: background-color var(--transition-speed),
+              border-color var(--transition-speed),
+              box-shadow var(--transition-speed);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #4299e1;
+  color: white;
+  transition: background-color var(--transition-speed);
+}
+
+.btn-primary:hover {
+  background-color: #3182ce;
+}
+
+.btn-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  transition: background-color var(--transition-speed),
+              color var(--transition-speed),
+              border-color var(--transition-speed);
+}
+
+.btn-secondary:hover {
+  background-color: var(--hover-bg);
+} 

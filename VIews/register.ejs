@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<!-- Start Generation Here -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<!-- End Generation Here -->
+</head>
+<body>
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4">
+          <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+              <a href="/" class="text-2xl font-bold text-blue-600">
+                <i class="fas fa-book-open mr-2"></i>KhataBook
+              </a>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="hidden md:flex items-center gap-2">
+                <button class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
+                  <i class="fas fa-moon text-gray-600"></i>
+                </button>
+                <button class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
+                  <i class="fas fa-sun text-gray-600"></i>
+                </button>
+              </div>
+              <div class="flex items-center gap-3">
+                <a href="/login" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Login</a>
+                <a href="/register" class="px-4 py-2 rounded-md border border-blue-600 text-blue-600 hover:bg-blue-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+<div class="flex flex-col justify-center items-center bg-gray-200 my-20 py-10 rounded-md w-1/2 mx-auto" >
+    <h1 class="text-2xl text-black font-bold text-center pb-10" >Register</h1>
+    <div class="flex justify-center items-center" >
+        <form action="/registeruser" method="post" class="flex flex-col gap-4" >
+            <input type="text" name="username" placeholder="Username" class="p-4 w-96 rounded-md border-3 border-gray-900" >
+            <input type="text" name="fullname" placeholder="FullName" class="p-4 w-96 rounded-md border-3 border-gray-900" >
+            <input type="password" name="password" placeholder="Password" class="p-4 w-96 rounded-md border-3 border-gray-900" >
+            <input type="email" name="email" placeholder="Email" class="p-4 w-96 rounded-md border-3 border-gray-900" >
+
+            <input type="submit" value="Register" class="p-2 rounded-md border-3 border-blue-900 bg-blue-900 text-white" >
+            <a href="/login" class="text-center text-blue-900" >Already have an account? Login</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
